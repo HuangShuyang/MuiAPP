@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../fonts/iconfont.css" />
+		<style>
+			.mui-card-header {
+				margin: 1rem;
+			}
+			
+			.mui-card-header img {
+				width: 3rem;
+				border-radius: 50%;
+				margin-right: 1rem;
+				margin-top: -.3rem;
+			}
+			
+			.mui-card {
+				margin-bottom: 1rem;
+				padding: .5rem 0;
+			}
+			
+			.mui-card-footer span {
+				margin-top: .2rem;
+				margin-right: .5rem;
+			}
+			
+			.mui-card-footer .mui-btn {
+				padding: 6px;
+				border: 1px solid transparent;
+			}
+			
+			.iconfont {
+				font-size: 14px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content" id="main">
+			<!--<div class="mui-card">
+				<div class="mui-card-header">
+					<img src="../images/6.jpg" class="mui-pull-left" />
+					<div class="mui-media-body">
+						小M
+						<p>发表于 2016-06-30 15:30</p>
+					</div>
+				</div>
+				<div class="mui-card-content">
+					<img class="" src="../images/ccon-1.jpg" alt="" width="100%" />
+					<p class="mui-content-padded">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est voluptas quas dicta necessitatibus quibusdam vitae adipisci eos culpa sed veritatis minima rem repellendus similique qui nemo? Aspernatur ea quaerat asperiores.</p>
+				</div>
+				<div class="mui-card-footer">
+					<button  type="button" class="mui-btn mui-btn-primary mui-btn-outlined icon iconfont" style="margin-left: .5rem">
+					    &#xe60f; 1111 赞
+					</button>
+					<button type="button" class="mui-btn mui-btn-primary mui-btn-outlined icon iconfont">
+					        &#xe60e; 600 评论
+					</button>
+					<span class="mui-h5 mui-pull-right">1小时前</span>
+				</div>
+			</div>-->
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script>
+			mui.init();
+			//			右滑打开菜单
+			window.addEventListener("swiperight", function() {
+				mui.fire(plus.webview.currentWebview().opener(), 'menu:open');
+			});
+			var main = document.getElementById('main');
+			mui.post('../data/contact.json', {}, function(data) {
+				for (var i = 0; i < data.length; i++) {
+					var card = document.createElement('div');
+					card.className = 'mui-card';
+					card.innerHTML = '<div class="mui-card-header">\
+											<img src="../images/6.jpg" class="mui-pull-left" />\
+											<div class="mui-media-body">\
+												小M\
+												<p>发表于 2016-06-30 15:30</p>\
+											</div>\
+										</div>\
+										<div class="mui-card-content">\
+											<img class="" src="../images/ccon-1.jpg" alt="" width="100%" />\
+											<p class="mui-content-padded">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est voluptas quas dicta necessitatibus quibusdam vitae adipisci eos culpa sed veritatis minima rem repellendus similique qui nemo? Aspernatur ea quaerat asperiores.</p>\
+										</div>\
+										<div class="mui-card-footer">\
+											<button type="button" class="good mui-btn mui-btn-primary mui-btn-outlined icon iconfont" style="margin-left: .5rem">\
+											   &#xe60f; <span>1111</span>赞\
+											</button>\
+											<button type="button" class="mui-btn mui-btn-primary mui-btn-outlined icon iconfont">\
+											   &#xe60e;  600 评论\
+											</button>\
+											<span class="mui-h5 mui-pull-right">1小时前</span>\
+										</div>';
+					main.appendChild(card)
+				}
+				//			点赞
+				mui('.mui-card').on('tap', '.good', function() {
+					var span = this.querySelector('span');
+					var i = parseInt(span.innerHTML);
+					span.innerHTML = ++i
+				})
+			}, 'json');
+		</script>
+	</body>
+
+</html>

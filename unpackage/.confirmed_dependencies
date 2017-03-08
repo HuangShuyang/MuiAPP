@@ -1,0 +1,128 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"tmpl/home.html",
+			"css/app.css",
+			"fonts/iconfont.css",
+			"fonts/iconfont.woff",
+			"fonts/iconfont.ttf"
+		],
+		"refer": [
+			"tmpl/contact.html",
+			"tmpl/userCenter.html",
+			"tmpl/friendly.html",
+			"tmpl/home.html",
+			"tmpl/login.html",
+			"tmpl/menu.html"
+		]
+	},
+	"tmpl/login.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"tmpl/register.html"
+		]
+	},
+	"tmpl/menu.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"css/app.css",
+			"tmpl/home.html"
+		],
+		"refer": [
+			"tmpl/home.html"
+		]
+	},
+	"tmpl/home.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"images/2.jpg",
+			"images/1.jpg",
+			"images/3.jpg",
+			"images/4.jpg",
+			"data/list_data.json",
+			"fonts/mui.ttf",
+			"images/5.jpg",
+			"tmpl/details.html"
+		],
+		"refer": [
+			"tmpl/details.html"
+		]
+	},
+	"tmpl/details.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"images/2.jpg",
+			"fonts/mui.ttf",
+			"images/1.jpg",
+			"images/3.jpg",
+			"css/previewImage.css",
+			"js/mui.zoom.js",
+			"js/mui.previewimage.js"
+		],
+		"refer": []
+	},
+	"tmpl/contact.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"data/contact.json",
+			"images/1.jpg",
+			"css/mui.indexedlist.css",
+			"js/mui.indexedlist.js",
+			"images/con-3.jpg",
+			"images/con-4.jpg",
+			"images/con-2.jpg",
+			"images/con-5.jpg",
+			"images/con-1.jpg",
+			"images/6.jpg"
+		],
+		"refer": []
+	},
+	"tmpl/friendly.html": {
+		"resources": [
+			"data/contact.json",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"images/1.jpg",
+			"css/mui.min.css",
+			"images/6.jpg",
+			"images/ccon-1.jpg",
+			"fonts/iconfont.css",
+			"fonts/iconfont.woff",
+			"fonts/iconfont.ttf"
+		],
+		"refer": []
+	},
+	"tmpl/userCenter.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"images/1.jpg",
+			"js/upLoadHeaderImage.js",
+			"images/logo.png"
+		],
+		"refer": [
+			"tmpl/login.html"
+		]
+	},
+	"tmpl/register.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"js/app.js",
+			"fonts/mui.ttf"
+		],
+		"refer": []
+	}
+}

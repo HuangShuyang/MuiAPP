@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/app.css" />
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div class="title">侧滑导航</div>
+			<div class="content">
+				<div style="">
+					这是webview模式下的侧滑导航示例，你可以在这里放置任何内容；关闭侧滑菜单有多种方式： 1.点击本侧滑菜单页之外的任意位置; 2.点击如下红色按钮；左滑屏幕等
+				</div>
+				<p style="margin: 10px 15px;">
+					<button id="close-btn" type="button" class="mui-btn mui-btn-danger mui-btn-block" style="padding: 5px 20px;">关闭侧滑菜单</button>
+				</p>
+			</div>
+			<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted" style="color: #ddd;">
+				<li class="mui-table-view-cell">
+					<a id="home" class="mui-navigate-right">
+						 首页
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a id="contact" class="mui-navigate-right">
+						通讯录
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a id="friendly" class="mui-navigate-right">
+						朋友圈
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a id="userCenter" class="mui-navigate-right">
+						用户中心
+					</a>
+				</li>
+			</ul>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init();
+//			点击菜单列表项
+			mui('.mui-table-view').on('tap', 'a', function() {
+				//触发自定义事件，通知主页面关闭菜单
+				close();
+				mui.fire(mui.currentWebview.opener(), 'goThisPage', {
+					id: this.getAttribute('id')
+				})
+			});
+//			点击关闭菜单按钮
+			document.getElementById('close-btn').addEventListener('tap',function(){
+				close();
+			})
+			function close() {
+				mui.fire(mui.currentWebview.opener(), 'menu:close');
+			}
+			window.addEventListener("swipeleft", function() {
+				close();
+			});
+			//			//在android4.4.2中的swipe事件，需要preventDefault一下，否则触发不正常
+			//			window.addEventListener('dragstart',function(e){
+			//				mui.gestures.touch.lockDirection = true; //锁定方向
+			//				mui.gestures.touch.startDirection = e.detail.direction;
+			//			});
+			//			window.addEventListener('dragleft', function(e) {
+			//				if(!mui.isScrolling){
+			//					e.detail.gesture.preventDefault();	
+			//				}
+			//			});
+		</script>
+	</body>
+
+</html>

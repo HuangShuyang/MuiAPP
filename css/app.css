@@ -1,0 +1,18 @@
+body,
+.mui-content {
+	background-color: #333;
+	color: #fff;
+}
+.title {
+	margin: 35px 15px 10px;
+}
+.title+.content {
+	margin: 10px 15px 35px ;
+	color: #bbb;
+	text-indent: 1em;
+	font-size: 14px;
+	line-height: 24px;
+}
+.mui-table-view {
+	margin-bottom: 35px;
+}

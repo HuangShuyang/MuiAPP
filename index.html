@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="fonts/iconfont.css" />
+		<style type="text/css">
+			.mui-bar-tab .mui-tab-item .icon~.mui-tab-label {
+				font-size: 11px;
+				display: block;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			
+			.iconfont {
+				display: block;
+			}
+			.iconfont span{
+				transform: scale(.9) translate(-4px);
+				-webkit-transform: scale(.9) translate(-4px);
+				position: absolute;
+				top:0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--标题-->
+		<header class="mui-bar mui-bar-nav">
+			<a id="menu" class="mui-icon mui-icon-bars mui-pull-left"></a>
+			<h1 class="mui-title" id="title">首页</h1>
+		</header>
+		<!--底部选项卡-->
+		<nav class="mui-bar mui-bar-tab">
+			<a id="home" href="tmpl/home.html" class="mui-tab-item mui-active">
+				<!--<span class="mui-icon mui-icon-home"></span>-->
+				<span class="icon iconfont">&#xe60c;</span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a id="contact" href="tmpl/contact.html" class="mui-tab-item">
+				<span class="icon iconfont">&#xe612;</span>
+				<span class="mui-tab-label">通讯录</span>
+			</a>
+			<a id="friendly" href="tmpl/friendly.html" class="mui-tab-item">
+				<span class="icon iconfont">
+					&#xe611;
+					<span class="mui-badge mui-badge-danger ">1</span>
+				</span>
+				<span class="mui-tab-label">朋友圈</span>
+			</a>
+			<a id="userCenter" href="tmpl/userCenter.html" class="mui-tab-item">
+				<span class="icon iconfont">&#xe610</span>
+				<span class="mui-tab-label">用户中心</span>
+			</a>
+		</nav>
+
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				swipeBack: true,
+				statusBarBackground: '#f7f7f7',
+				preloadPages: [ //预加载登录
+					{
+						id: 'login',
+						url: 'tmpl/login.html'
+					}
+				]
+			});
+			/***********创建选项卡中的子页面************/
+			var subPages = [
+				'tmpl/home.html',
+				'tmpl/contact.html',
+				'tmpl/friendly.html',
+				'tmpl/userCenter.html'
+			];
+			//			设置子页面在父页面中的位置
+			var styles = {
+				top: '45px',
+				bottom: '51px'
+			};
+			//创建子页面，首个子页面显示，其他均隐藏；
+			var main;
+			mui.plusReady(function() {
+				main = plus.webview.currentWebview(); //获得当前页面的webview
+				for (var i = 0, sub; i < subPages.length; i++) {
+					sub = plus.webview.create(subPages[i], subPages[i], styles); //参数分别为 id,url,styles
+					if (i > 0) {
+						sub.hide(); //只显示第一个子页面
+					}
+					main.append(sub);
+				}
+			});
+
+			/***********点击选项卡切换页面************/
+			//			当前激活的选项
+			var active = subPages[0],
+				title = document.getElementById('title');
+			mui('.mui-bar-tab').on('tap', 'a', function() {
+					//				更换标题
+					title.innerHTML = this.querySelector('.mui-tab-label').innerHTML;
+					var target = this.getAttribute('href'); //获取当前点击对象的href
+					if (target == active) {
+						return;
+					}
+					plus.webview.hide(active); //隐藏激活的页面
+					if (target == 'tmpl/userCenter.html') {
+						if (!localStorage.username) {
+							//						plus.webview.show(target);
+							mui.openWindow({
+								id: 'login'
+							})
+						}
+					}
+					plus.webview.show(target); //显示当前点击的页面
+					//更改当前激活的状态
+					active = target
+				})
+				/***********侧滑菜单--难点************/
+			var menu, //菜单页面webview
+				showMenu; //菜单显示状态，默认不显示
+			mui.plusReady(function() {
+				//仅支持竖屏显示
+				plus.screen.lockOrientation("portrait-primary");
+				//				点击右侧30%的遮罩层关闭菜单，mui在遮罩层上封装了maskClick事件，我们监听就好了
+				main.addEventListener('maskClick', closeMenu);
+				//				预加载menu
+				menu = mui.preload({
+					id: 'menu',
+					url: 'tmpl/menu.html',
+					styles: {
+						left: 0,
+						zindex: -1 //防止切换时挡住主页面
+					}
+				});
+				menu.setStyle({
+					width:'70%'
+				})
+			});
+			/*显示侧滑菜单*/
+			function openMenu() {
+				if (!showMenu) {
+					menu.show('none', 0, function() {
+						main.setStyle({
+							mask: 'rgba(0,0,0,.4)',
+							left: '70%',
+							transition: {
+								duration: 150
+							}
+						});
+						showMenu = true;
+					})
+
+				}
+			}
+
+			/*关闭侧滑菜单 并把主页面归为*/
+			function closeMenu() {
+				if (showMenu) {
+					main.setStyle({
+						mask: 'none',
+						left: 0,
+						transition: {
+							duration: 150
+						}
+					});
+					menu.hide();
+					showMenu = false;
+				}
+			}
+			window.addEventListener('menu:close', closeMenu);
+			window.addEventListener('menu:open', openMenu);
+			window.addEventListener("goThisPage", function(e) {
+				var target = document.getElementById(e.detail.id)
+					//模拟点击选项卡
+				mui.trigger(target, 'tap')
+					//切换选项卡高亮
+				var current = document.querySelector(".mui-bar-tab>.mui-tab-item.mui-active");
+				if (target !== current) {
+					current.classList.remove('mui-active');
+					target.classList.add('mui-active');
+				}
+
+			});
+			//点击左上角侧滑图标，打开侧滑菜单；
+			document.querySelector('.mui-icon-bars').addEventListener('tap', function() {
+				if (showMenu) {
+					closeMenu();
+				} else {
+					openMenu();
+				}
+			});
+			//重写mui.menu方法，Android版本menu按键按下可自动打开、关闭侧滑菜单；
+			mui.menu = function() {
+					if (showMenu) {
+						closeMenu();
+					} else {
+						openMenu();
+					}
+				}
+				//首页返回键处理
+				//处理逻辑：1秒内，连续两次按返回键，则退出应用；
+			var first = null;//定义首次按键状态
+			mui.back = function() {
+				if (showMenu) {
+					closeMenu();
+				} else {
+					//首次按键，提示‘再按一次退出应用’
+					if (!first) {
+						first = new Date().getTime();
+						mui.toast('再按一次退出应用');
+						setTimeout(function() {
+							first = null;
+						}, 1000);
+					} else {
+						if (new Date().getTime() - first < 1000) {
+							plus.runtime.quit(); //退出应用
+						}
+					}
+				}
+			};
+		</script>
+	</body>
+
+</html>
